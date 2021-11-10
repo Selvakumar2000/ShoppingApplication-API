@@ -1,0 +1,14 @@
+﻿[
+  {
+    "UserName": "Selvakumar",
+    "UserRole": "Buyer",
+    "DateOfBirth": "2000-01-03",
+    "Fullname": "Selvakumar Raman",
+    "Gender" :  "male",
+    "Email": "skselva312000@gmail.com",
+    "PhoneNumber": "8870862782", 
+    "City": "Chennai",
+    "State": "Tamilnadu",
+    "Country": "India"
+  }
+]
