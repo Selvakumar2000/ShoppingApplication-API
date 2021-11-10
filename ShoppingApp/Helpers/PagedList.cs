@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -21,10 +23,10 @@ namespace ShoppingApp.Helpers
         public int PageSize { get; set; }
         public int TotalCount { get; set; }
 
-        public static Task<PagedList<T>> Create(IQueryable<T> source, int pageNumber, int pageSize)
+        public static  PagedList<T> Create(IList<T> source, int pageNumber, int pageSize)
         {
-            var count = source.Count(); //count the number of users in the db
-            var items = source.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+            var count =  source.Count; 
+            var items =  source.OfType<T>().Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
             return new PagedList<T>(items, count, pageNumber, pageSize);
         }
     }

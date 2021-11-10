@@ -16,11 +16,11 @@ namespace ShoppingApp.Controllers
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
         };
 
-        private readonly ILogger<WeatherForecastController> _logger;
+        //private readonly ILogger<WeatherForecastController> _logger;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        public WeatherForecastController(/*ILogger<WeatherForecastController> logger*/)
         {
-            _logger = logger;
+            //_logger = logger;
         }
 
         [HttpGet]

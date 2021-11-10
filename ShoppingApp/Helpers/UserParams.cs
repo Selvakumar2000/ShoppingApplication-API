@@ -9,6 +9,7 @@ namespace ShoppingApp.Helpers
     {
 
         public string Gender { get; set; }
+        public string Category{ get; set; }
 
         public int MinPrice { get; set; }
 

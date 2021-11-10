@@ -30,6 +30,9 @@ namespace ShoppingApp.Extensions
             services.Configure<CloudinarySettings>(config.GetSection("CloudinarySettings"));
             services.AddScoped<IProductPhotoService, ProductPhotoService>();
 
+            //For Repositories
+            services.AddScoped<IProductsRepository, ProductsRepository>();
+
             return services;
 
         }
