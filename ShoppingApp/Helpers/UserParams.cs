@@ -8,11 +8,11 @@ namespace ShoppingApp.Helpers
     public class UserParams : PaginationParams
     {
 
-        public string Gender { get; set; }
+        public string Gender { get; set; } = "Male";
         public string Category{ get; set; }
 
-        public int MinPrice { get; set; }
+        public int MinPrice { get; set; } = 1;
 
-        public int MaxPrice { get; set; }
+        public int MaxPrice { get; set; } = 100000;
     }
 }

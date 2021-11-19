@@ -25,13 +25,14 @@ namespace ShoppingApp.Extensions
 
             //For Jwt Token Creation and Handling
             services.AddScoped<ITokenService, TokenService>();
-
+     
             //For Cloudinary Settings
             services.Configure<CloudinarySettings>(config.GetSection("CloudinarySettings"));
             services.AddScoped<IProductPhotoService, ProductPhotoService>();
 
             //For Repositories
             services.AddScoped<IProductsRepository, ProductsRepository>();
+            services.AddScoped<IOrderManagement, OrderManagementRepository>();
 
             return services;
 

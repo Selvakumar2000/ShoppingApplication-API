@@ -15,7 +15,6 @@ namespace ShoppingApp.Services
 {
     public class TokenService : ITokenService
     {
-        //private readonly IConfiguration _config;
         private readonly SymmetricSecurityKey _key;
         private readonly UserManager<AppUser> _userManager;
         public TokenService(IConfiguration config, UserManager<AppUser> userManager)
@@ -27,8 +26,8 @@ namespace ShoppingApp.Services
         {
             var claims = new List<Claim>
             {
-                new Claim(JwtRegisteredClaimNames.NameId,user.Id.ToString()),
-                new Claim(JwtRegisteredClaimNames.UniqueName,user.UserName),
+                new Claim(JwtRegisteredClaimNames.NameId, user.Id.ToString()),
+                new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName)
             };
 
             //get the roles of an user

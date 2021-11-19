@@ -18,5 +18,6 @@ namespace ShoppingApp.DTOs
         public int Discount { get; set; }
         public string Category { get; set; }
         public string Gender { get; set; }
+        public int Quantity{ get; set; }
     }
 }

@@ -25,7 +25,6 @@ namespace ShoppingApp.Data
 
         public int AddProduct(ProductDetailsDto ProductDetails, ImageUploadResult result)
         {
-
             var connectionString = _config.GetConnectionString("ShopingAppCon");
 
             SqlConnection con = new SqlConnection(connectionString);
@@ -48,6 +47,7 @@ namespace ShoppingApp.Data
             cmd.Parameters.AddWithValue("@Gender", ProductDetails.Gender);
             cmd.Parameters.AddWithValue("@PhotoUrl", result.SecureUrl.AbsoluteUri);
             cmd.Parameters.AddWithValue("@PhotoPublicId", result.PublicId);
+            cmd.Parameters.AddWithValue("Quantity", ProductDetails.Quantity);
 
             int i = cmd.ExecuteNonQuery();
             con.Close();
@@ -72,21 +72,26 @@ namespace ShoppingApp.Data
                     CommandType = CommandType.StoredProcedure
                 };
 
-                cmd.Parameters.AddWithValue("@Gender", "Male");
                 cmd.Parameters.AddWithValue("@Category", userParams.Category);
+                cmd.Parameters.AddWithValue("@MinPrice", userParams.MinPrice);
+                cmd.Parameters.AddWithValue("@MaxPrice", userParams.MaxPrice);
+                cmd.Parameters.AddWithValue("@Gender", userParams.Gender);
+
                 SqlDataReader sdr = cmd.ExecuteReader();
 
                 while (sdr.Read())
                 {
                     ProductsDto products = new ProductsDto
                     {
+                        ProductId = (int)sdr["ProductId"],
                         ProductName = (string)sdr["ProductName"],
                         ProductBrand = (string)sdr["ProductBrand"],
                         ProductDescription = (string)sdr["ProductDescription"],
                         AmountRs = (int)sdr["AmountRs"],
                         OriginalPrice = (int)sdr["OriginalPrice"],
                         Discount = (int)sdr["Discount"],
-                        PhotoUrl = (string)sdr["PhotoUrl"]
+                        PhotoUrl = (string)sdr["PhotoUrl"],
+                        Category= (string)sdr["Category"]
                     };
 
                     productsList.Add(products);
@@ -102,6 +107,42 @@ namespace ShoppingApp.Data
 
             return  PagedList<ProductsDto>
                     .Create(productsList, userParams.PageNumber, userParams.PageSize);
+        }
+
+        public string GetUserGender(string username)
+        {
+            string gender = "";
+            try
+            {
+                var connectionString = _config.GetConnectionString("ShopingAppCon");
+
+                SqlConnection con = new SqlConnection(connectionString);
+                con.Open();
+
+                SqlCommand cmd = new SqlCommand("SpToGetUserGender", con)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+
+                cmd.Parameters.AddWithValue("@UserName", username);
+
+                SqlDataReader sdr = cmd.ExecuteReader();
+
+                while (sdr.Read())
+                {
+                    gender = (string)sdr["Gender"];
+                }
+
+                con.Close();
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Something went wrong....." + ex.Message);
+            }
+
+            return gender;
+            
         }
     }
 }

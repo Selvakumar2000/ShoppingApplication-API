@@ -35,18 +35,19 @@ namespace ShoppingApp.Extensions
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
             {
                 options.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuerSigningKey = true,
+                {       
+                    //authenticate the users with valid token
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["TokenKey"])),
-                    ValidateIssuer = false,  //API Server
-                    ValidateAudience = false //Angular App
+                    ValidateIssuerSigningKey = true, //token is signed by server and here we verify that
+                    ValidateIssuer = false, //API
+                    ValidateAudience = false //Angular
                 };
             });
 
             services.AddAuthorization(opt =>
             {
-                opt.AddPolicy("RequireAdminRole", policy => policy.RequireRole("Admin"));
-                opt.AddPolicy("ModeratePhotoRole", policy => policy.RequireRole("Admin", "Moderator"));
+                opt.AddPolicy("RequireGoldBuyerRole", policy => policy.RequireRole("GoldBuyer"));
+                opt.AddPolicy("RequiredGoldSupplier", policy => policy.RequireRole("GoldSupplier"));
             });
             return services;
         }

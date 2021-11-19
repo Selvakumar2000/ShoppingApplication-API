@@ -1,4 +1,5 @@
 ﻿using CloudinaryDotNet.Actions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
@@ -18,6 +19,18 @@ namespace ShoppingApp.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
+    /*
+     * Now this API is protected, we need to authenticate with authentication scheme (Ex. jwtBearer)
+     * Add authentication scheme service into our application
+     * Add Authentication Middleware which must be above the authorization middleware
+     * So in order to authorize our request, we need to send the jwt token along the request
+     * Send the token in Headers prefix with Bearer
+     * 
+     * In c#, the readonly fields can be initialized either at the declaration or in a constructor.
+     * The readonly field values will be evaluated during the run time in c#. Once values are assigned to read-only
+     * fields, then those values must be the same throughout the application.
+     */
     public class ProductsController : BaseApiController
     {       
         private readonly IProductsRepository _productsRepository;
@@ -29,26 +42,51 @@ namespace ShoppingApp.Controllers
         }
 
 
+        [HttpGet]           //[FromQuery] is used for handle the empty queryparameters
+        public ActionResult<IEnumerable<ProductsDto>> GetProducts([FromQuery] UserParams userParams)
+        {
+            if(string.Equals(User.GetUserRole(), "Buyer") || string.Equals(User.GetUserRole(), "GoldBuyer"))
+            {
+                var users = _productsRepository.GetProducts(userParams);
+                Response.AddPaginationHeader(users.CurrentPage, users.PageSize, users.TotalCount, users.TotalPages);
+                return Ok(users);
+            }
+
+            return Unauthorized("You are not allowed here");
+        }
+
+
         //Ref --> https://stackoverflow.com/questions/41367602/upload-files-and-json-in-asp-net-core-web-api
 
         [HttpPost("add-product")]
         public ActionResult<string> AddProduct([FromForm] string productDetails, [FromForm] IFormFile file)
         {
             int i;
-            ProductDetailsDto ProductDetails = JsonConvert.DeserializeObject<ProductDetailsDto>(productDetails);
-            try
+            if (string.Equals(User.GetUserRole(), "Supplier") || string.Equals(User.GetUserRole(), "GoldSupplier"))
             {
-                ImageUploadResult result = _productPhotoService.AddProductPhoto(file);
-                if (result.Error != null) return BadRequest(result.Error.Message + "Problem adding Product Image");
+                ProductDetailsDto ProductDetails = JsonConvert.DeserializeObject<ProductDetailsDto>(productDetails);
+                try
+                {
+                    ImageUploadResult result = _productPhotoService.AddProductPhoto(file);
+                    if (result.Error != null) return BadRequest(result.Error.Message + "Problem adding Product Image");
 
-                i = _productsRepository.AddProduct(ProductDetails, result);
+                    ProductDetails.SupplierId = User.GetUserId();
+                    ProductDetails.SupplierName = User.GetUsername();
+                    ProductDetails.OriginalPrice = ProductDetails.AmountRs - 200;
+                    
+                    i = _productsRepository.AddProduct(ProductDetails, result);
 
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest("Operation Failed  " + ex);
+                }
             }
-            catch (Exception ex)
+            else
             {
-                return BadRequest("Operation Failed  " + ex);
+                return BadRequest("You are not allowed here");
             }
-
+            
             if (i > 0)
             {
                 return Ok("Product Details Addedd Successfully");
@@ -57,12 +95,6 @@ namespace ShoppingApp.Controllers
             return BadRequest("Problem in Adding Product Details");
         }
 
-        [HttpGet]           //[FromQuery] is used for handle the empty queryparameters
-        public ActionResult<IEnumerable<ProductsDto>> GetProductsAsync([FromQuery] UserParams userParams)
-        {
-            var users =_productsRepository.GetProducts(userParams);
-            Response.AddPaginationHeader(users.CurrentPage, users.PageSize, users.TotalCount, users.TotalPages);
-            return Ok(users);
-        }
+       
     }
 }

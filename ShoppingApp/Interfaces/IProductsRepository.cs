@@ -14,7 +14,7 @@ namespace ShoppingApp.Interfaces
     {
         int AddProduct(ProductDetailsDto productDetails, ImageUploadResult result);
         PagedList<ProductsDto> GetProducts(UserParams userParams);
-
+        string GetUserGender(string username);
 
     }
 }

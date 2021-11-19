@@ -18,7 +18,7 @@ namespace ShoppingApp.Services
         public ProductPhotoService(IOptions<CloudinarySettings> config)
         {
             var acc = new Account
-           (  //ordering matters
+           (   //ordering matters
                 config.Value.CloudName,
                 config.Value.ApiKey,
                 config.Value.ApiSecret

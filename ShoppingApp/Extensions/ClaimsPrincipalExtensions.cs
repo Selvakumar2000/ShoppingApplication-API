@@ -19,5 +19,11 @@ namespace ShoppingApp.Extensions
             return int.Parse(user.FindFirst(ClaimTypes.NameIdentifier)?.Value);
             //return user's UserId from the token that the API uses to authenticate (claims)
         }
+
+        public static string GetUserRole(this ClaimsPrincipal user)
+        {
+            return user.FindFirst(ClaimTypes.Role)?.Value;
+            //return user's Role from the token that the API uses to authenticate (claims)
+        }
     }
 }
