@@ -23,6 +23,13 @@ namespace ShoppingApp.Controllers
             _orderManagement = orderManagement;
         }
 
+        [HttpGet("get-products")]
+        public ActionResult<List<ProductsDto>> GetCartProducts()
+        {
+            int buyerId = User.GetUserId();
+            List<ProductsDto> products = _orderManagement.GetCartProducts(buyerId);
+            return Ok(products);
+        }
 
         [HttpPost("addto-cart")]
         public ActionResult<string> AddToCart(AddToCartDto productDetails)

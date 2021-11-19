@@ -95,6 +95,14 @@ namespace ShoppingApp.Controllers
             return BadRequest("Problem in Adding Product Details");
         }
 
-       
+        [HttpGet("get-products")]
+        public ActionResult<List<ProductsDto>> GetUploadedProducts()
+        {
+            int supplierId = User.GetUserId();
+            List<ProductsDto> products = _productsRepository.GetUploadedProducts(supplierId);
+            return Ok(products);
+        }
+
+
     }
 }

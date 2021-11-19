@@ -1,4 +1,5 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using ShoppingApp.DTOs;
 using ShoppingApp.Interfaces;
@@ -48,6 +49,56 @@ namespace ShoppingApp.Data
             con.Close();
 
             return i;
+        }
+
+        public List<ProductsDto> GetCartProducts(int buyerId)
+        {
+            List<ProductsDto> productsList = new List<ProductsDto>();
+
+            try
+            {
+                var connectionString = _config.GetConnectionString("ShopingAppCon");
+
+                SqlConnection con = new SqlConnection(connectionString);
+                con.Open();
+
+                SqlCommand cmd = new SqlCommand("SpToGetCartProducts", con)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+
+                cmd.Parameters.AddWithValue("@BuyerId", buyerId);
+
+                SqlDataReader sdr = cmd.ExecuteReader();
+
+                while (sdr.Read())
+                {
+                    ProductsDto products = new ProductsDto
+                    {
+                        ProductId = (int)sdr["ProductId"],
+                        ProductName = (string)sdr["ProductName"],
+                        ProductBrand = (string)sdr["ProductBrand"],
+                        ProductDescription = (string)sdr["ProductDescription"],
+                        AmountRs = (int)sdr["AmountRs"],
+                        Discount = (int)sdr["Discount"],
+                        PhotoUrl = (string)sdr["PhotoUrl"],
+                        Category = (string)sdr["Category"]
+                    };
+
+                    products.OriginalPrice = products.AmountRs + 200;
+
+                    productsList.Add(products);
+
+                }
+
+                con.Close();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Something went wrong....." + ex.Message);
+            }
+
+            return productsList;
         }
 
         public string GetProductGender(int productId)

@@ -8,8 +8,9 @@ namespace ShoppingApp.Interfaces
 {
     public interface IOrderManagement
     {
-        int AddToCart(AddToCartDto productDetails);
-        string GetProductGender(int productId);
-        int GetProductStatus(int productId, int buyerId, string buyerName, string buyerRole);
+        public int AddToCart(AddToCartDto productDetails);
+        public string GetProductGender(int productId);
+        public int GetProductStatus(int productId, int buyerId, string buyerName, string buyerRole);
+        public List<ProductsDto> GetCartProducts(int buyerId);
     }
 }

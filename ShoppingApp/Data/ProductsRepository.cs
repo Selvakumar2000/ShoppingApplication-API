@@ -109,6 +109,55 @@ namespace ShoppingApp.Data
                     .Create(productsList, userParams.PageNumber, userParams.PageSize);
         }
 
+        public List<ProductsDto> GetUploadedProducts(int supplierId)
+        {
+            List<ProductsDto> productsList = new List<ProductsDto>();
+
+            try
+            {
+                var connectionString = _config.GetConnectionString("ShopingAppCon");
+
+                SqlConnection con = new SqlConnection(connectionString);
+                con.Open();
+
+                SqlCommand cmd = new SqlCommand("SpToUploadedProducts", con)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+
+                cmd.Parameters.AddWithValue("@SupplierId", supplierId);
+
+                SqlDataReader sdr = cmd.ExecuteReader();
+
+                while (sdr.Read())
+                {
+                    ProductsDto products = new ProductsDto
+                    {
+                        ProductId = (int)sdr["ProductId"],
+                        ProductName = (string)sdr["ProductName"],
+                        ProductBrand = (string)sdr["ProductBrand"],
+                        ProductDescription = (string)sdr["ProductDescription"],
+                        AmountRs = (int)sdr["AmountRs"],
+                        OriginalPrice = (int)sdr["OriginalPrice"],
+                        Discount = (int)sdr["Discount"],
+                        PhotoUrl = (string)sdr["PhotoUrl"],
+                        Category = (string)sdr["Category"]
+                    };
+
+                    productsList.Add(products);
+
+                }
+
+                con.Close();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Something went wrong....." + ex.Message);
+            }
+
+            return productsList;
+        }
+
         public string GetUserGender(string username)
         {
             string gender = "";

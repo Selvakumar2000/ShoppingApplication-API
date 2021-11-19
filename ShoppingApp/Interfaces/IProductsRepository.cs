@@ -12,9 +12,10 @@ namespace ShoppingApp.Interfaces
 {
     public interface IProductsRepository
     {
-        int AddProduct(ProductDetailsDto productDetails, ImageUploadResult result);
-        PagedList<ProductsDto> GetProducts(UserParams userParams);
-        string GetUserGender(string username);
+        public int AddProduct(ProductDetailsDto productDetails, ImageUploadResult result);
+        public PagedList<ProductsDto> GetProducts(UserParams userParams);
+        public string GetUserGender(string username);
+        public List<ProductsDto> GetUploadedProducts(int supplierId);
 
     }
 }
