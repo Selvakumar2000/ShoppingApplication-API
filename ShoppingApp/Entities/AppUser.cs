@@ -15,6 +15,7 @@ namespace ShoppingApp.Entities
         public string City { get; set; }
         public string State { get; set; }
         public string Country { get; set; }
+        public string EmailSent{ get; set; }
         public ICollection<AppUserRole> UserRoles { get; set; }
     }
 }

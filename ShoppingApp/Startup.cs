@@ -31,6 +31,9 @@ namespace ShoppingApp
             //For Authentication
             services.AddIdentityServices(_config);
 
+            //For EmailService
+            services.AddEmailServices(_config);
+
             //For CORS policy
             services.AddCors();
 

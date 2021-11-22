@@ -24,13 +24,17 @@ namespace ShoppingApp.Extensions
                 opt.Password.RequireLowercase = false;
                 opt.Password.RequireNonAlphanumeric = false; //by default identity model required complex password
                 opt.User.AllowedUserNameCharacters = string.Empty;
+                //opt.User.RequireUniqueEmail = true;
 
             }).AddRoles<AppRole>()
               .AddRoleManager<RoleManager<AppRole>>()
               .AddSignInManager<SignInManager<AppUser>>()
               .AddRoleValidator<RoleValidator<AppRole>>()
-              .AddEntityFrameworkStores<DataContext>();
+              .AddEntityFrameworkStores<DataContext>()
+              .AddDefaultTokenProviders(); 
 
+            services.Configure<DataProtectionTokenProviderOptions>(opt =>
+                                                                   opt.TokenLifespan = TimeSpan.FromHours(2));
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
             {

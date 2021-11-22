@@ -2,9 +2,12 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
+using ShoppingApp.Data;
 using ShoppingApp.DTOs;
 using ShoppingApp.Entities;
+using ShoppingApp.Helpers;
 using ShoppingApp.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -20,13 +23,17 @@ namespace ShoppingApp.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
         private readonly ITokenService _tokenService;
+        private readonly IEmailSender _emailSender;
+        private readonly DataContext _context;
 
         public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager,
-                                ITokenService tokenService)
+                                ITokenService tokenService, IEmailSender emailSender, DataContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _tokenService = tokenService;
+            _emailSender = emailSender;
+            _context = context;
         }
 
         [HttpPost("Register")]
@@ -45,6 +52,15 @@ namespace ShoppingApp.Controllers
             var user = mapper.Map<RegisterDto, AppUser>(registerDto);
 
             user.UserName = registerDto.Username.ToLower();
+
+            if(await SendMailAsync(user.Email, user.UserName))
+            {
+                user.EmailSent = "Yes";
+            }
+            else
+            {
+                user.EmailSent = "No";
+            }
 
             var result = await _userManager.CreateAsync(user, registerDto.Password);
 
@@ -75,6 +91,7 @@ namespace ShoppingApp.Controllers
 
             if (!roleResult.Succeeded) return BadRequest(result.Errors);
 
+
             return new UserDto
             {
                 Username = user.UserName,
@@ -87,11 +104,67 @@ namespace ShoppingApp.Controllers
             };
         }
 
+        [HttpPost("ResetPasswordLink")]
+        public async Task<ActionResult<string>> ChangePassword(PasswordChangeDto details)
+        {
+            //var user = await _userManager.FindByEmailAsync(forgotPasswordDto.Email);
+            var user = await _context.Users.Where(x => x.UserName == details.UserName && x.Email == details.Email)
+                                           .FirstOrDefaultAsync();
+            if(user == null)
+            {
+                return BadRequest("User Doesnot Exists");
+            }
+            
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            var param = new Dictionary<string, string>
+            {
+                {"token", token },
+                {"email", details.Email },
+                {"username", details.UserName }
+            };
+
+            var callback = QueryHelpers.AddQueryString(details.ClientUrl, param);
+            var message = new Message(new string[] { user.Email }, "Password Reset For ShopMe Portal", callback);
+            
+            await _emailSender.SendResetPasswordAsync(message, user.UserName);
+
+            return Ok("Password Reset link has been sent, please check your email.");
+        }
+
+        [HttpPost("ResetPassword")]
+        public async Task<ActionResult<string>> ResetPassword(ResetPasswordDto resetPasswordDto)
+        {
+            var user = await _context.Users
+                                     .Where(x => x.UserName == resetPasswordDto.UserName && x.Email == resetPasswordDto.Email)
+                                     .FirstOrDefaultAsync();
+            if (user == null)
+            {
+                return BadRequest("User Doesnot Exists");
+            }
+                
+            var resetPassResult = await _userManager.ResetPasswordAsync(user, resetPasswordDto.Token, resetPasswordDto.Password);
+            if (!resetPassResult.Succeeded)
+            {
+                var errors = resetPassResult.Errors.Select(e => e.Description);
+                return BadRequest("Problem in changing password, try after sometimes");
+            }
+            return Ok("Password Changed Successfully");
+        }
 
         //make username to be unique
         private async Task<bool> UserExists(string username)
         {
             return await _userManager.Users.AnyAsync(x => x.UserName == username.ToLower());
+        }
+
+        //send email
+        public async Task<bool> SendMailAsync(string email, string username)
+        {
+            var message = new Message(new string[] { email }, "Welcome To ShopMe Portal",
+            "Greetings from ShopMe");
+           
+            await _emailSender.SendEmailAsync(message, username);
+            return true;
         }
 
 

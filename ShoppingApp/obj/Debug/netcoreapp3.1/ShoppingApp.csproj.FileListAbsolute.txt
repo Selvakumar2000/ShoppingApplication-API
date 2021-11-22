@@ -71,3 +71,7 @@ C:\Users\RB00271\source\repos\ShoppingApp\ShoppingApp\bin\Debug\netcoreapp3.1\Au
 C:\Users\RB00271\source\repos\ShoppingApp\ShoppingApp\bin\Debug\netcoreapp3.1\CloudinaryDotNet.dll
 C:\Users\RB00271\source\repos\ShoppingApp\ShoppingApp\bin\Debug\netcoreapp3.1\Microsoft.Extensions.WebEncoders.dll
 C:\Users\RB00271\source\repos\ShoppingApp\ShoppingApp\bin\Debug\netcoreapp3.1\System.Text.Encodings.Web.dll
+C:\Users\RB00271\source\repos\ShoppingApp\ShoppingApp\bin\Debug\netcoreapp3.1\MailKit.dll
+C:\Users\RB00271\source\repos\ShoppingApp\ShoppingApp\bin\Debug\netcoreapp3.1\MimeKit.dll
+C:\Users\RB00271\source\repos\ShoppingApp\ShoppingApp\bin\Debug\netcoreapp3.1\NETCore.MailKit.dll
+C:\Users\RB00271\source\repos\ShoppingApp\ShoppingApp\bin\Debug\netcoreapp3.1\BouncyCastle.Crypto.dll

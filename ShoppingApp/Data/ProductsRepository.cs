@@ -102,7 +102,7 @@ namespace ShoppingApp.Data
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Something went wrong....." + ex.Message);
+                throw ex;
             }
 
             return  PagedList<ProductsDto>
@@ -152,7 +152,7 @@ namespace ShoppingApp.Data
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Something went wrong....." + ex.Message);
+                throw ex;
             }
 
             return productsList;
@@ -187,7 +187,7 @@ namespace ShoppingApp.Data
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Something went wrong....." + ex.Message);
+                throw ex;
             }
 
             return gender;
