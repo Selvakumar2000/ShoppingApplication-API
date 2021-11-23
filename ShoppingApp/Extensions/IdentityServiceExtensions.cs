@@ -24,7 +24,7 @@ namespace ShoppingApp.Extensions
                 opt.Password.RequireLowercase = false;
                 opt.Password.RequireNonAlphanumeric = false; //by default identity model required complex password
                 opt.User.AllowedUserNameCharacters = string.Empty;
-                //opt.User.RequireUniqueEmail = true;
+                opt.User.RequireUniqueEmail = true;
 
             }).AddRoles<AppRole>()
               .AddRoleManager<RoleManager<AppRole>>()

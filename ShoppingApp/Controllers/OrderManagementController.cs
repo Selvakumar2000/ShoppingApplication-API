@@ -23,7 +23,7 @@ namespace ShoppingApp.Controllers
             _orderManagement = orderManagement;
         }
 
-        [HttpGet("get-products")]
+        [HttpGet("cartproducts")]
         public ActionResult<List<ProductsDto>> GetCartProducts()
         {
             int buyerId = User.GetUserId();
@@ -31,7 +31,7 @@ namespace ShoppingApp.Controllers
             return Ok(products);
         }
 
-        [HttpPost("addto-cart")]
+        [HttpPost("addtocart")]
         public ActionResult<string> AddToCart(AddToCartDto productDetails)
         {
             int spStatus, status = 1, buyerId;

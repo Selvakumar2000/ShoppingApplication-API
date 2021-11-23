@@ -48,7 +48,10 @@ namespace ShoppingApp.Migrations
                     Gender = table.Column<string>(nullable: true),
                     City = table.Column<string>(nullable: true),
                     State = table.Column<string>(nullable: true),
-                    Country = table.Column<string>(nullable: true)
+                    Country = table.Column<string>(nullable: true),
+                    EmailSent = table.Column<string>(nullable: true),
+                    PhotoUrl = table.Column<string>(nullable: true),
+                    PublicId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {

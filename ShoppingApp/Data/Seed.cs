@@ -36,7 +36,7 @@ namespace ShoppingApp.Data
 
             foreach (var user in users)
             {
-                user.UserName = user.UserName.ToLower();
+                user.UserName = user.UserName;
 
                 await userManager.CreateAsync(user, "Selvam1");
 
@@ -45,20 +45,20 @@ namespace ShoppingApp.Data
 
             var supplier = new AppUser
             {
-                UserName = "SelvakumarSK",
-                UserRole = "All",
+                UserName = "SelvakumarSp",
+                UserRole = "Supplier",
                 DateOfBirth = Convert.ToDateTime("2000-01-03"),
-                Gender = "male",
-                Fullname = "Selvakumar Raman",
-                Email = "skselva312000@gmail.com",
-                PhoneNumber = "8870862782",
-                City = "Chennai",
+                Gender = "Male",
+                Fullname = "Selvakumar",
+                Email = "sk2selva312000@gmail.com",
+                PhoneNumber = "6374100161",
+                City = "Madurai",
                 State = "Tamilnadu",
                 Country = "India"
             };
 
             await userManager.CreateAsync(supplier, "Selvam1");
-            await userManager.AddToRolesAsync(supplier, new[] { "Buyer", "GoldBuyer", "Supplier", "GoldSupplier"});
+            await userManager.AddToRoleAsync(supplier, "Supplier");
         }
     }
 }

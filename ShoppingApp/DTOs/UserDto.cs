@@ -14,5 +14,6 @@ namespace ShoppingApp.DTOs
         public string PhoneNumber { get; set; }
         public string UserRole { get; set; }
         public string Gender { get; set; }
+        public string PhotoUrl{ get; set; }
     }
 }

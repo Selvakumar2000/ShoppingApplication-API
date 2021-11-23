@@ -58,7 +58,7 @@ namespace ShoppingApp.Controllers
 
         //Ref --> https://stackoverflow.com/questions/41367602/upload-files-and-json-in-asp-net-core-web-api
 
-        [HttpPost("add-product")]
+        [HttpPost("upload-product")]
         public ActionResult<string> AddProduct([FromForm] string productDetails, [FromForm] IFormFile file)
         {
             int i;
@@ -95,7 +95,7 @@ namespace ShoppingApp.Controllers
             return BadRequest("Problem in Adding Product Details");
         }
 
-        [HttpGet("get-products")]
+        [HttpGet("uploadedproducts")]
         public ActionResult<List<ProductsDto>> GetUploadedProducts()
         {
             int supplierId = User.GetUserId();

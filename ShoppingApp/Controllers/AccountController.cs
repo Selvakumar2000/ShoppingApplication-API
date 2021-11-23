@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -7,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using ShoppingApp.Data;
 using ShoppingApp.DTOs;
 using ShoppingApp.Entities;
+using ShoppingApp.Extensions;
 using ShoppingApp.Helpers;
 using ShoppingApp.Interfaces;
 using System;
@@ -24,16 +26,14 @@ namespace ShoppingApp.Controllers
         private readonly SignInManager<AppUser> _signInManager;
         private readonly ITokenService _tokenService;
         private readonly IEmailSender _emailSender;
-        private readonly DataContext _context;
 
         public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager,
-                                ITokenService tokenService, IEmailSender emailSender, DataContext context)
+                                ITokenService tokenService, IEmailSender emailSender)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _tokenService = tokenService;
             _emailSender = emailSender;
-            _context = context;
         }
 
         [HttpPost("Register")]
@@ -43,6 +43,9 @@ namespace ShoppingApp.Controllers
             if (await UserExists(registerDto.Username)) 
                 return BadRequest("UserName is already taken  Choose Someother Name");
 
+            if (await UserEmailExists(registerDto.Email))
+                return BadRequest("Email is already taken  Choose Someother Email");
+
             //Initialize the mapper
             var config = new MapperConfiguration(cfg => cfg.CreateMap<RegisterDto, AppUser>());
 
@@ -51,7 +54,7 @@ namespace ShoppingApp.Controllers
 
             var user = mapper.Map<RegisterDto, AppUser>(registerDto);
 
-            user.UserName = registerDto.Username.ToLower();
+            user.UserName = registerDto.Username;
 
             if(await SendMailAsync(user.Email, user.UserName))
             {
@@ -100,17 +103,17 @@ namespace ShoppingApp.Controllers
                 Email = user.Email,
                 PhoneNumber = user.PhoneNumber,
                 UserRole = user.UserRole,
-                Gender = user.Gender
+                Gender = user.Gender,
+                PhotoUrl = user.PhotoUrl
             };
         }
 
         [HttpPost("ResetPasswordLink")]
         public async Task<ActionResult<string>> ChangePassword(PasswordChangeDto details)
         {
-            //var user = await _userManager.FindByEmailAsync(forgotPasswordDto.Email);
-            var user = await _context.Users.Where(x => x.UserName == details.UserName && x.Email == details.Email)
-                                           .FirstOrDefaultAsync();
-            if(user == null)
+            var user = await _userManager.Users.Where(x => x.UserName == details.UserName && x.Email == details.Email)
+                                               .FirstOrDefaultAsync();
+            if (user == null)
             {
                 return BadRequest("User Doesnot Exists");
             }
@@ -134,9 +137,9 @@ namespace ShoppingApp.Controllers
         [HttpPost("ResetPassword")]
         public async Task<ActionResult<string>> ResetPassword(ResetPasswordDto resetPasswordDto)
         {
-            var user = await _context.Users
-                                     .Where(x => x.UserName == resetPasswordDto.UserName && x.Email == resetPasswordDto.Email)
-                                     .FirstOrDefaultAsync();
+            var user = await _userManager.Users.Where(x => x.UserName == resetPasswordDto.UserName && x.Email == resetPasswordDto.Email)
+                                               .FirstOrDefaultAsync();
+
             if (user == null)
             {
                 return BadRequest("User Doesnot Exists");
@@ -154,7 +157,13 @@ namespace ShoppingApp.Controllers
         //make username to be unique
         private async Task<bool> UserExists(string username)
         {
-            return await _userManager.Users.AnyAsync(x => x.UserName == username.ToLower());
+            return await _userManager.Users.AnyAsync(x => x.UserName == username);
+        }
+
+        //make email to be unique
+        private async Task<bool> UserEmailExists(string email)
+        {
+            return await _userManager.Users.AnyAsync(x => x.Email == email);
         }
 
         //send email
@@ -173,7 +182,7 @@ namespace ShoppingApp.Controllers
         {
             /*UserName Check*/
             var user = await _userManager.Users
-                                         .SingleOrDefaultAsync(x => x.UserName == loginDto.Username.ToLower());
+                                         .SingleOrDefaultAsync(x => x.UserName == loginDto.Username);
 
             if (user == null) return Unauthorized("UserName is Incorrect");
 
@@ -189,7 +198,8 @@ namespace ShoppingApp.Controllers
                 Email = user.Email,
                 PhoneNumber = user.PhoneNumber,
                 UserRole = user.UserRole,
-                Gender = user.Gender
+                Gender = user.Gender,
+                PhotoUrl = user.PhotoUrl
             };
         }
     }

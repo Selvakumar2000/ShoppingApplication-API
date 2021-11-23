@@ -31,6 +31,7 @@ namespace ShoppingApp.Extensions
             services.AddScoped<IProductPhotoService, ProductPhotoService>();
 
             //For Repositories
+            services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IProductsRepository, ProductsRepository>();
             services.AddScoped<IOrderManagement, OrderManagementRepository>();
 

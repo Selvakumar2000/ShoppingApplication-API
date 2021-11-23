@@ -25,7 +25,7 @@ namespace ShoppingApp.Data
             SqlConnection con = new SqlConnection(connectionString);
             con.Open();
 
-            SqlCommand cmd = new SqlCommand("SpToAddProductCart", con)
+            SqlCommand cmd = new SqlCommand("SpToAddCartProduct", con)
             {
                 CommandType = CommandType.StoredProcedure
             };

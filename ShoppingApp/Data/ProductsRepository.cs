@@ -120,7 +120,7 @@ namespace ShoppingApp.Data
                 SqlConnection con = new SqlConnection(connectionString);
                 con.Open();
 
-                SqlCommand cmd = new SqlCommand("SpToUploadedProducts", con)
+                SqlCommand cmd = new SqlCommand("SpToGetUploadedProducts", con)
                 {
                     CommandType = CommandType.StoredProcedure
                 };
@@ -156,42 +156,6 @@ namespace ShoppingApp.Data
             }
 
             return productsList;
-        }
-
-        public string GetUserGender(string username)
-        {
-            string gender = "";
-            try
-            {
-                var connectionString = _config.GetConnectionString("ShopingAppCon");
-
-                SqlConnection con = new SqlConnection(connectionString);
-                con.Open();
-
-                SqlCommand cmd = new SqlCommand("SpToGetUserGender", con)
-                {
-                    CommandType = CommandType.StoredProcedure
-                };
-
-                cmd.Parameters.AddWithValue("@UserName", username);
-
-                SqlDataReader sdr = cmd.ExecuteReader();
-
-                while (sdr.Read())
-                {
-                    gender = (string)sdr["Gender"];
-                }
-
-                con.Close();
-
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-
-            return gender;
-            
         }
     }
 }

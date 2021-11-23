@@ -10,8 +10,8 @@ using ShoppingApp.Data;
 namespace ShoppingApp.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20211122101534_EmailSendToUsers")]
-    partial class EmailSendToUsers
+    [Migration("20211123131215_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -197,6 +197,12 @@ namespace ShoppingApp.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
+
+                    b.Property<string>("PhotoUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PublicId")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");

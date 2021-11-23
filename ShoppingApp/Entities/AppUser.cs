@@ -16,6 +16,8 @@ namespace ShoppingApp.Entities
         public string State { get; set; }
         public string Country { get; set; }
         public string EmailSent{ get; set; }
+        public string PhotoUrl{ get; set; }
+        public string PublicId{ get; set; }
         public ICollection<AppUserRole> UserRoles { get; set; }
     }
 }
