@@ -50,11 +50,20 @@ namespace ShoppingApp.Controllers
         [HttpPut("updatedetails")]
         public ActionResult<UserDetailsDto> UpdateUser([FromForm] string userDetails, [FromForm] IFormFile file)
         {
+            UserDetailsDto UserDetails = JsonConvert.DeserializeObject<UserDetailsDto>(userDetails);
+
             int i = 1;
             int userId = User.GetUserId();
             string username = User.GetUsername();
             ImageUploadResult result;
             string photoUrl = null, photoId = null;
+
+            int status = _userRepository.GetUserExistance(UserDetails.UserName, UserDetails.Email);
+
+            if(status == 1)
+            {
+                return BadRequest("Username or Email Already Exists");
+            }
 
             photoUrl =  _userRepository.GetPhotoUrl(userId);
             photoId = _userRepository.GetPhotoId(userId);
@@ -66,8 +75,6 @@ namespace ShoppingApp.Controllers
                 photoUrl = result.SecureUrl.AbsoluteUri;
                 photoId = result.PublicId;
             }
-
-            UserDetailsDto UserDetails = JsonConvert.DeserializeObject<UserDetailsDto>(userDetails);
 
             UserDetails.PhotoUrl = photoUrl;
             UserDetails.PublicId = photoId;

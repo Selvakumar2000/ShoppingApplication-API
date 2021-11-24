@@ -14,5 +14,7 @@ namespace ShoppingApp.Interfaces
         public int UpdateDetails(AppUser updatedDetails, int userId);
         public string GetPhotoUrl(int userId);
         public string GetPhotoId(int userId);
+        public int GetUserExistance(string username, string email);
+
     }
 }

@@ -201,5 +201,41 @@ namespace ShoppingApp.Data
             }
             return photoId;
         }
+
+        public int GetUserExistance(string username, string email)
+        {
+            int status = 0;
+            try
+            {
+                var connectionString = _config.GetConnectionString("ShopingAppCon");
+
+                SqlConnection con = new SqlConnection(connectionString);
+                con.Open();
+
+                SqlCommand cmd = new SqlCommand("SpToGetUserExistance", con)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+
+                cmd.Parameters.AddWithValue("@UserName", username);
+                cmd.Parameters.AddWithValue("@Email", email);
+
+                SqlDataReader sdr = cmd.ExecuteReader();
+
+                while (sdr.Read())
+                {
+                    status = (int)sdr["RecordExists"];
+                }
+
+                con.Close();
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return status;
+        }
     }
 }
