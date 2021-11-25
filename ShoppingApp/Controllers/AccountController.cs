@@ -99,9 +99,6 @@ namespace ShoppingApp.Controllers
             {
                 Username = user.UserName,
                 Token = await _tokenService.CreateToken(user),
-                Fullname = user.Fullname,
-                Email = user.Email,
-                PhoneNumber = user.PhoneNumber,
                 UserRole = user.UserRole,
                 Gender = user.Gender,
                 PhotoUrl = user.PhotoUrl
@@ -194,9 +191,6 @@ namespace ShoppingApp.Controllers
             {
                 Username = user.UserName,
                 Token = await _tokenService.CreateToken(user),
-                Fullname = user.Fullname,
-                Email = user.Email,
-                PhoneNumber = user.PhoneNumber,
                 UserRole = user.UserRole,
                 Gender = user.Gender,
                 PhotoUrl = user.PhotoUrl
