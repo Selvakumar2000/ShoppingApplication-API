@@ -19,5 +19,6 @@ namespace ShoppingApp.Entities
         public string PhotoUrl{ get; set; }
         public string PublicId{ get; set; }
         public ICollection<AppUserRole> UserRoles { get; set; }
+        public int IsActive{ get; set; }
     }
 }

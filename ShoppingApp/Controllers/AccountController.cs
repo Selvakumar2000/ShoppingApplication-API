@@ -187,6 +187,9 @@ namespace ShoppingApp.Controllers
 
             if (!result.Succeeded) return Unauthorized("Password is Incorrect");
 
+            var userStatus = await _userManager.Users.Where(u => u.UserName == loginDto.Username)
+                                                     .Select(s => s.IsActive).FirstOrDefaultAsync();
+
             return new UserDto
             {
                 Username = user.UserName,
