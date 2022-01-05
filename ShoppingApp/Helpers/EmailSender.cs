@@ -1,6 +1,5 @@
 ﻿using MailKit.Net.Smtp;
 using MimeKit;
-using ShoppingApp.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -10,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ShoppingApp.Helpers
 {
-    public class EmailSender : IEmailSender
+    public class EmailSender
     {
         private readonly EmailConfiguration _emailConfig;
         public EmailSender(EmailConfiguration emailConfig)
@@ -44,7 +43,7 @@ namespace ShoppingApp.Helpers
             emailMessage.Body = new TextPart(MimeKit.Text.TextFormat.Html)
             {
                 Text = string.Format("<h3 style='color:Black'>Hi {0}, click the link to reset your password </h3>" +
-                                     "<p>{1}</p>", myTI.ToTitleCase(username), message.Content)
+                                     "<a href={1} style='font-weight:700'>Reset Password Link</a>", myTI.ToTitleCase(username), message.Content)
             };
             
 

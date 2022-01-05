@@ -12,5 +12,6 @@ namespace ShoppingApp.DTOs
         public string UserRole { get; set; }
         public string Gender { get; set; }
         public string PhotoUrl{ get; set; }
+        public string UniqueId{ get; set; }
     }
 }

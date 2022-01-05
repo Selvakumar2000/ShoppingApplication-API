@@ -10,7 +10,7 @@ using ShoppingApp.DTOs;
 using ShoppingApp.Entities;
 using ShoppingApp.Extensions;
 using ShoppingApp.Helpers;
-using ShoppingApp.Interfaces;
+using ShoppingApp.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,11 +24,11 @@ namespace ShoppingApp.Controllers
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
-        private readonly ITokenService _tokenService;
-        private readonly IEmailSender _emailSender;
+        private readonly TokenService _tokenService;
+        private readonly EmailSender _emailSender;
 
-        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager,
-                                ITokenService tokenService, IEmailSender emailSender)
+        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager,TokenService tokenService,
+                                 EmailSender emailSender)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -64,7 +64,13 @@ namespace ShoppingApp.Controllers
             {
                 user.EmailSent = "No";
             }
-
+                        
+            user.IsActive = 1;
+            /*GUID stands for Global Unique Identifier.
+             *A GUID is a 128-bit integer (16 bytes) that you can use across all computers and networks
+             *wherever a unique identifier is required.
+             */
+            user.UniqueId = Guid.NewGuid().ToString();
             var result = await _userManager.CreateAsync(user, registerDto.Password);
 
             if (!result.Succeeded) return BadRequest(result.Errors);
@@ -101,7 +107,8 @@ namespace ShoppingApp.Controllers
                 Token = await _tokenService.CreateToken(user),
                 UserRole = user.UserRole,
                 Gender = user.Gender,
-                PhotoUrl = user.PhotoUrl
+                PhotoUrl = user.PhotoUrl,
+                UniqueId = user.UniqueId
             };
         }
 
@@ -173,7 +180,6 @@ namespace ShoppingApp.Controllers
             return true;
         }
 
-
         [HttpPost("Login")]
         public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
         {
@@ -190,14 +196,72 @@ namespace ShoppingApp.Controllers
             var userStatus = await _userManager.Users.Where(u => u.UserName == loginDto.Username)
                                                      .Select(s => s.IsActive).FirstOrDefaultAsync();
 
+            if (userStatus == 1)
+            {
+                return new UserDto { };
+
+            }
+
+            user.IsActive = 1;
+            user.UniqueId = Guid.NewGuid().ToString();
+            await _userManager.UpdateAsync(user);
+
             return new UserDto
             {
                 Username = user.UserName,
                 Token = await _tokenService.CreateToken(user),
                 UserRole = user.UserRole,
                 Gender = user.Gender,
-                PhotoUrl = user.PhotoUrl
+                PhotoUrl = user.PhotoUrl,
+                UniqueId = user.UniqueId
             };
+        }
+
+        [HttpGet("Logout/{username}")]
+        public async Task<ActionResult> Logout(string username)
+        {
+            var user = await _userManager.Users
+                                         .SingleOrDefaultAsync(x => x.UserName == username);
+
+            user.IsActive = 0;
+            await _userManager.UpdateAsync(user);
+
+            return Ok("Logout");
+
+        }
+
+        [HttpPost("Proceed")]
+        public async Task<ActionResult<UserDto>> ProceedToLogin(LoginDto loginDto)
+        {
+            var user = await _userManager.Users
+                                         .SingleOrDefaultAsync(x => x.UserName == loginDto.Username);
+
+            user.IsActive = 1;
+            user.UniqueId = Guid.NewGuid().ToString();
+            await _userManager.UpdateAsync(user);
+
+            return new UserDto
+            {
+                Username = user.UserName,
+                Token = await _tokenService.CreateToken(user),
+                UserRole = user.UserRole,
+                Gender = user.Gender,
+                PhotoUrl = user.PhotoUrl,
+                UniqueId = user.UniqueId
+            };
+        }
+
+        [HttpGet("Check/{uniqueId}")]
+        public async Task<int> UniqueIdCheck(string uniqueId)
+        {
+            var UniqueID = await _userManager.Users.Where(u => u.UniqueId == uniqueId)
+                                                     .Select(s => s.UniqueId).FirstOrDefaultAsync();
+            if(UniqueID == null)
+            {
+                return 0;
+            }
+
+            return 1;
         }
     }
 }

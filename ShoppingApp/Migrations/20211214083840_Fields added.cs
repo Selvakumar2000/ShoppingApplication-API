@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ShoppingApp.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class Fieldsadded : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -51,7 +51,9 @@ namespace ShoppingApp.Migrations
                     Country = table.Column<string>(nullable: true),
                     EmailSent = table.Column<string>(nullable: true),
                     PhotoUrl = table.Column<string>(nullable: true),
-                    PublicId = table.Column<string>(nullable: true)
+                    PublicId = table.Column<string>(nullable: true),
+                    IsActive = table.Column<int>(nullable: false),
+                    UniqueId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {

@@ -53,7 +53,7 @@ namespace ShoppingApp
             app.UseRouting();
 
             app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowCredentials()
-                              .WithOrigins("https://localhost:4200", "http://localhost:4200"));
+                              .WithOrigins("https://localhost:4200", "http://localhost:4200", "https://localhost:3000/"));
 
             app.UseAuthentication();
 

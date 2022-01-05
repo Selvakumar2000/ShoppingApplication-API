@@ -2,7 +2,6 @@
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using ShoppingApp.DTOs;
-using ShoppingApp.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -11,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ShoppingApp.Data
 {
-    public class OrderManagementRepository : IOrderManagement
+    public class OrderManagementRepository 
     {
         private readonly IConfiguration _config;
         public OrderManagementRepository(IConfiguration config)
@@ -43,7 +42,7 @@ namespace ShoppingApp.Data
             cmd.Parameters.AddWithValue("@ProductGender", productDetails.ProductGender);
             cmd.Parameters.AddWithValue("@PhotoUrl", productDetails.PhotoUrl);
             cmd.Parameters.AddWithValue("@AddedTime", productDetails.AddedTime);
-            cmd.Parameters.AddWithValue("@ProductStatus", productDetails.ProductStatus);
+            cmd.Parameters.AddWithValue("@IsCart", productDetails.IsCart);
 
             int i = cmd.ExecuteNonQuery();
             con.Close();
@@ -163,6 +162,36 @@ namespace ShoppingApp.Data
                     status = (int)sdr["RecordExists"];
                 }
 
+                con.Close();
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return status;
+        }
+
+        public int RemoveCartProduct(int buyerId, int productID)
+        {
+            int status = 0;
+            try
+            {
+                var connectionString = _config.GetConnectionString("ShopingAppCon");
+
+                SqlConnection con = new SqlConnection(connectionString);
+                con.Open();
+
+                SqlCommand cmd = new SqlCommand("SpToRemoveCartProduct", con)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+
+                cmd.Parameters.AddWithValue("@BuyerId", buyerId);
+                cmd.Parameters.AddWithValue("@ProductID", productID);
+
+                status = cmd.ExecuteNonQuery();
                 con.Close();
 
             }

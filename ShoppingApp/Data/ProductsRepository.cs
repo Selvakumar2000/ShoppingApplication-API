@@ -6,7 +6,6 @@ using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using ShoppingApp.DTOs;
 using ShoppingApp.Helpers;
-using ShoppingApp.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -15,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace ShoppingApp.Data
 {
-    public class ProductsRepository : IProductsRepository
+    public class ProductsRepository 
     {
         private readonly IConfiguration _config;
         public ProductsRepository(IConfiguration config)
@@ -141,7 +140,8 @@ namespace ShoppingApp.Data
                         OriginalPrice = (int)sdr["OriginalPrice"],
                         Discount = (int)sdr["Discount"],
                         PhotoUrl = (string)sdr["PhotoUrl"],
-                        Category = (string)sdr["Category"]
+                        Category = (string)sdr["Category"],
+                        Quantity = (int)sdr["Quantity"]
                     };
 
                     productsList.Add(products);
@@ -157,5 +157,69 @@ namespace ShoppingApp.Data
 
             return productsList;
         }
+
+        public int UpdateProdcutDetails(UpdateProduct productDetails)
+        {
+            int i;
+            try
+            {
+                var connectionString = _config.GetConnectionString("ShopingAppCon");
+
+                SqlConnection con = new SqlConnection(connectionString);
+                con.Open();
+
+                SqlCommand cmd = new SqlCommand("SpToUpdateProductDetails", con)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+
+                cmd.Parameters.AddWithValue("@ProductId", productDetails.ProductId);
+                cmd.Parameters.AddWithValue("@ProductName", productDetails.ProductName);
+                cmd.Parameters.AddWithValue("@ProductDescription", productDetails.ProductDescription);
+                cmd.Parameters.AddWithValue("@AmountRs", productDetails.AmountRs);
+                cmd.Parameters.AddWithValue("@Discount", productDetails.Discount);
+                cmd.Parameters.AddWithValue("@Quantity", productDetails.Quantity);
+
+                i = cmd.ExecuteNonQuery();
+
+                con.Close();
+
+                return i;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public int DeleteProduct(int productId)
+        {
+            int i;
+            try
+            {
+                var connectionString = _config.GetConnectionString("ShopingAppCon");
+
+                SqlConnection con = new SqlConnection(connectionString);
+                con.Open();
+
+                SqlCommand cmd = new SqlCommand("SpToDeleteProduct", con)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+
+                cmd.Parameters.AddWithValue("@ProductId", productId);
+
+                i = cmd.ExecuteNonQuery();
+
+                con.Close();
+
+                return i;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
     }
 }

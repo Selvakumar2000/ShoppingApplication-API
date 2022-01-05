@@ -3,7 +3,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ShoppingApp.Data;
 using ShoppingApp.Helpers;
-using ShoppingApp.Interfaces;
 using ShoppingApp.Services;
 using System;
 using System.Collections.Generic;
@@ -24,16 +23,16 @@ namespace ShoppingApp.Extensions
             });
 
             //For Jwt Token Creation and Handling
-            services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<TokenService>();
      
             //For Cloudinary Settings
             services.Configure<CloudinarySettings>(config.GetSection("CloudinarySettings"));
-            services.AddScoped<IProductPhotoService, ProductPhotoService>();
+            services.AddScoped<ProductPhotoService>();
 
             //For Repositories
-            services.AddScoped<IUserRepository, UserRepository>();
-            services.AddScoped<IProductsRepository, ProductsRepository>();
-            services.AddScoped<IOrderManagement, OrderManagementRepository>();
+            services.AddScoped<UserRepository>();
+            services.AddScoped<ProductsRepository>();
+            services.AddScoped<OrderManagementRepository>();
 
             return services;
 

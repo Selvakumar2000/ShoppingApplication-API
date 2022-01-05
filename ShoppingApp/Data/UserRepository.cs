@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Configuration;
 using ShoppingApp.DTOs;
 using ShoppingApp.Entities;
-using ShoppingApp.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -11,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ShoppingApp.Data
 {
-    public class UserRepository : IUserRepository
+    public class UserRepository
     {
         private readonly IConfiguration _config;
         public UserRepository(IConfiguration config)
@@ -54,7 +53,6 @@ namespace ShoppingApp.Data
             return Username;
         }
 
-
         public UserDetailsDto GetUsersDetails(string username)
         {
             UserDetailsDto userdetails = new UserDetailsDto();
@@ -77,13 +75,11 @@ namespace ShoppingApp.Data
                 while (sdr.Read())
                 {
                     userdetails.Fullname = (string)sdr["Fullname"];
-                    userdetails.UserName = (string)sdr["UserName"];
                     userdetails.Email = (string)sdr["Email"];
                     userdetails.PhoneNumber = (string)sdr["PhoneNumber"];
                     userdetails.City = (string)sdr["City"];
                     userdetails.State = (string)sdr["State"];
                     userdetails.Country = (string)sdr["Country"];
-                    userdetails.UserRole = (string)sdr["UserRole"];
                     userdetails.PhotoUrl = (sdr["PhotoUrl"] == DBNull.Value) ? null : (string)sdr["PhotoUrl"];
                 }
 
@@ -114,13 +110,11 @@ namespace ShoppingApp.Data
 
                 cmd.Parameters.AddWithValue("@UserId", userId);
                 cmd.Parameters.AddWithValue("@Fullname", updatedDetails.Fullname);
-                cmd.Parameters.AddWithValue("@UserName", updatedDetails.UserName);
                 cmd.Parameters.AddWithValue("@Email", updatedDetails.Email);
                 cmd.Parameters.AddWithValue("@PhoneNumber", updatedDetails.PhoneNumber);
                 cmd.Parameters.AddWithValue("@City", updatedDetails.City);
                 cmd.Parameters.AddWithValue("@State", updatedDetails.State);
                 cmd.Parameters.AddWithValue("@Country", updatedDetails.Country);
-                cmd.Parameters.AddWithValue("@UserRole", updatedDetails.UserRole);
                 cmd.Parameters.AddWithValue("@PhotoUrl", updatedDetails.PhotoUrl);
                 cmd.Parameters.AddWithValue("@PublicId", updatedDetails.PublicId);
 
@@ -202,7 +196,7 @@ namespace ShoppingApp.Data
             return photoId;
         }
 
-        public int GetUserExistance(string username, string email)
+        public int GetUserExistance(string currentuser, string phoneNumber, string email)
         {
             int status = 0;
             try
@@ -217,7 +211,8 @@ namespace ShoppingApp.Data
                     CommandType = CommandType.StoredProcedure
                 };
 
-                cmd.Parameters.AddWithValue("@UserName", username);
+                cmd.Parameters.AddWithValue("@CurrentUserName", currentuser);
+                cmd.Parameters.AddWithValue("@PhoneNumber", phoneNumber);
                 cmd.Parameters.AddWithValue("@Email", email);
 
                 SqlDataReader sdr = cmd.ExecuteReader();

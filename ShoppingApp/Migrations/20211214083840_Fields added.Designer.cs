@@ -10,8 +10,8 @@ using ShoppingApp.Data;
 namespace ShoppingApp.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20211201124738_IsActive Property Added")]
-    partial class IsActivePropertyAdded
+    [Migration("20211214083840_Fields added")]
+    partial class Fieldsadded
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -215,6 +215,9 @@ namespace ShoppingApp.Migrations
 
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
+
+                    b.Property<string>("UniqueId")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserName")
                         .HasColumnType("nvarchar(256)")

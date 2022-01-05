@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using ShoppingApp.DTOs;
 using ShoppingApp.Helpers;
-using ShoppingApp.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace ShoppingApp.Services
 {
-    public class ProductPhotoService : IProductPhotoService
+    public class ProductPhotoService
     {
         private readonly Cloudinary _cloudinary;
         public ProductPhotoService(IOptions<CloudinarySettings> config)

@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ShoppingApp.Helpers;
-using ShoppingApp.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +16,7 @@ namespace ShoppingApp.Extensions
             var emailConfig = config.GetSection("EmailConfiguration").Get<EmailConfiguration>();
             services.AddSingleton(emailConfig);
             services.AddControllers();
-            services.AddScoped<IEmailSender, EmailSender>();
+            services.AddScoped<EmailSender>();
             services.Configure<FormOptions>(opt =>
             {
                 opt.ValueLengthLimit = int.MaxValue;

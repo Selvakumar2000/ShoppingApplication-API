@@ -1,14 +1,17 @@
-﻿using CloudinaryDotNet.Actions;
+﻿using AutoMapper;
+using CloudinaryDotNet.Actions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using ShoppingApp.Data;
 using ShoppingApp.DTOs;
+using ShoppingApp.Entities;
 using ShoppingApp.Extensions;
 using ShoppingApp.Helpers;
-using ShoppingApp.Interfaces;
+using ShoppingApp.Services;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -33,9 +36,9 @@ namespace ShoppingApp.Controllers
      */
     public class ProductsController : BaseApiController
     {       
-        private readonly IProductsRepository _productsRepository;
-        private readonly IProductPhotoService _productPhotoService;
-        public ProductsController(IProductsRepository productsRepository, IProductPhotoService productPhotoService)
+        private readonly ProductsRepository _productsRepository;
+        private readonly ProductPhotoService _productPhotoService;
+        public ProductsController(ProductsRepository productsRepository, ProductPhotoService productPhotoService)
         {
             _productsRepository = productsRepository;
             _productPhotoService = productPhotoService;
@@ -103,6 +106,31 @@ namespace ShoppingApp.Controllers
             return Ok(products);
         }
 
+        [HttpPut("updateproduct")]
+        public ActionResult<string> UpdateProdcutDetails(UpdateProduct productDetails)
+        {
+            int i = 1;
+
+            if (i == _productsRepository.UpdateProdcutDetails(productDetails))
+            {
+                return Ok("Product Details Updated Successfully");
+            }
+
+            return BadRequest("Problem in update product details");
+        }
+
+        [HttpDelete("deleteProduct/{productId}")]
+        public ActionResult<string> DeleteProduct(int productId)
+        {
+            int i = 1;
+
+            if (i == _productsRepository.DeleteProduct(productId))
+            {
+                return Ok("Product Removed Successfully");
+            }
+
+            return BadRequest("Problem in Remove Product");
+        }
 
     }
 }

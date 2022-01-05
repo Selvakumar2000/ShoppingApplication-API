@@ -6,10 +6,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using ShoppingApp.Data;
 using ShoppingApp.DTOs;
 using ShoppingApp.Entities;
 using ShoppingApp.Extensions;
-using ShoppingApp.Interfaces;
+using ShoppingApp.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,9 +23,9 @@ namespace ShoppingApp.Controllers
     [Authorize]
     public class UsersController : BaseApiController
     {
-        private readonly IUserRepository _userRepository;
-        private readonly IProductPhotoService _productPhotoService;
-        public UsersController(IUserRepository userRepository, IProductPhotoService productPhotoService)
+        private readonly UserRepository _userRepository;
+        private readonly ProductPhotoService _productPhotoService;
+        public UsersController(UserRepository userRepository, ProductPhotoService productPhotoService)
         {
             _userRepository = userRepository;
             _productPhotoService = productPhotoService;
@@ -58,11 +59,11 @@ namespace ShoppingApp.Controllers
             ImageUploadResult result;
             string photoUrl = null, photoId = null;
 
-            int status = _userRepository.GetUserExistance(UserDetails.UserName, UserDetails.Email);
+            int status = _userRepository.GetUserExistance(username, UserDetails.PhoneNumber, UserDetails.Email);
 
             if(status == 1)
             {
-                return BadRequest("Username or Email Already Exists");
+                return BadRequest("Email or PhoneNumber is Already Exists");
             }
 
             photoUrl =  _userRepository.GetPhotoUrl(userId);

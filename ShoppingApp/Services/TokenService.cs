@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using ShoppingApp.Entities;
-using ShoppingApp.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -13,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace ShoppingApp.Services
 {
-    public class TokenService : ITokenService
+    public class TokenService
     {
         private readonly SymmetricSecurityKey _key;
         private readonly UserManager<AppUser> _userManager;
@@ -27,7 +26,7 @@ namespace ShoppingApp.Services
             var claims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.NameId, user.Id.ToString()),
-                new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName)
+                new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName),
             };
 
             //get the roles of an user

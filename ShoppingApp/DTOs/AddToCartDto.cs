@@ -20,7 +20,7 @@ namespace ShoppingApp.DTOs
         public string ProductGender { get; set; }
         public string PhotoUrl{ get; set; }
         public DateTime AddedTime { get; set; }
-        public int ProductStatus { get; set; }
+        public int IsCart { get; set; }
 
     }
 }
