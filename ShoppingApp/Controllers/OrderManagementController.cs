@@ -45,7 +45,7 @@ namespace ShoppingApp.Controllers
 
             if (status == spStatus)
             {
-                return Ok("This Product Already In Your Cart Section");
+                return Ok("This Product Already In Your Cart");
             }
 
             AddToCartDto obj = new AddToCartDto();
@@ -85,7 +85,7 @@ namespace ShoppingApp.Controllers
 
             if (i > 0)
             {
-                return Ok("Product Addedd To Your Cart Section Successfully");
+                return Ok("Product Added To Your Cart");
             }
 
             return BadRequest("Problem in Adding Product Into Your Cart Section");
