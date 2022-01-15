@@ -24,7 +24,7 @@ namespace ShoppingApp.Data
             SqlConnection con = new SqlConnection(connectionString);
             con.Open();
 
-            SqlCommand cmd = new SqlCommand("SpToAddCartProduct", con)
+            SqlCommand cmd = new SqlCommand("AddCartProduct", con)
             {
                 CommandType = CommandType.StoredProcedure
             };
@@ -61,7 +61,7 @@ namespace ShoppingApp.Data
                 SqlConnection con = new SqlConnection(connectionString);
                 con.Open();
 
-                SqlCommand cmd = new SqlCommand("SpToGetCartProducts", con)
+                SqlCommand cmd = new SqlCommand("GetCartProducts", con)
                 {
                     CommandType = CommandType.StoredProcedure
                 };
@@ -110,7 +110,7 @@ namespace ShoppingApp.Data
                 SqlConnection con = new SqlConnection(connectionString);
                 con.Open();
 
-                SqlCommand cmd = new SqlCommand("SpToGetProductGender", con)
+                SqlCommand cmd = new SqlCommand("GetProductGender", con)
                 {
                     CommandType = CommandType.StoredProcedure
                 };
@@ -145,7 +145,7 @@ namespace ShoppingApp.Data
                 SqlConnection con = new SqlConnection(connectionString);
                 con.Open();
 
-                SqlCommand cmd = new SqlCommand("SpToGetProductStatus", con)
+                SqlCommand cmd = new SqlCommand("GetProductStatus", con)
                 {
                     CommandType = CommandType.StoredProcedure
                 };
@@ -183,7 +183,7 @@ namespace ShoppingApp.Data
                 SqlConnection con = new SqlConnection(connectionString);
                 con.Open();
 
-                SqlCommand cmd = new SqlCommand("SpToRemoveCartProduct", con)
+                SqlCommand cmd = new SqlCommand("RemoveCartProduct", con)
                 {
                     CommandType = CommandType.StoredProcedure
                 };

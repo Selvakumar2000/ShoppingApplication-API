@@ -29,7 +29,7 @@ namespace ShoppingApp.Data
                 SqlConnection con = new SqlConnection(connectionString);
                 con.Open();
 
-                SqlCommand cmd = new SqlCommand("SpToGetUsername", con)
+                SqlCommand cmd = new SqlCommand("GetUsername", con)
                 {
                     CommandType = CommandType.StoredProcedure
                 };
@@ -63,7 +63,7 @@ namespace ShoppingApp.Data
                 SqlConnection con = new SqlConnection(connectionString);
                 con.Open();
 
-                SqlCommand cmd = new SqlCommand("SpToGetUserdetails", con)
+                SqlCommand cmd = new SqlCommand("GetUserdetails", con)
                 {
                     CommandType = CommandType.StoredProcedure
                 };
@@ -103,7 +103,7 @@ namespace ShoppingApp.Data
                 SqlConnection con = new SqlConnection(connectionString);
                 con.Open();
 
-                SqlCommand cmd = new SqlCommand("SpToUpdateUserDetails", con)
+                SqlCommand cmd = new SqlCommand("UpdateUserDetails", con)
                 {
                     CommandType = CommandType.StoredProcedure
                 };
@@ -140,7 +140,7 @@ namespace ShoppingApp.Data
                 SqlConnection con = new SqlConnection(connectionString);
                 con.Open();
 
-                SqlCommand cmd = new SqlCommand("SpToGetPhotoUrl", con)
+                SqlCommand cmd = new SqlCommand("GetPhotoUrl", con)
                 {
                     CommandType = CommandType.StoredProcedure
                 };
@@ -173,7 +173,7 @@ namespace ShoppingApp.Data
                 SqlConnection con = new SqlConnection(connectionString);
                 con.Open();
 
-                SqlCommand cmd = new SqlCommand("SpToGetPhotoId", con)
+                SqlCommand cmd = new SqlCommand("GetPhotoId", con)
                 {
                     CommandType = CommandType.StoredProcedure
                 };
@@ -206,7 +206,7 @@ namespace ShoppingApp.Data
                 SqlConnection con = new SqlConnection(connectionString);
                 con.Open();
 
-                SqlCommand cmd = new SqlCommand("SpToGetUserExistance", con)
+                SqlCommand cmd = new SqlCommand("GetUserExistance", con)
                 {
                     CommandType = CommandType.StoredProcedure
                 };

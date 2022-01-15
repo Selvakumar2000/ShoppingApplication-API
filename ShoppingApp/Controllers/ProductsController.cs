@@ -64,6 +64,11 @@ namespace ShoppingApp.Controllers
         [HttpPost("upload-product")]
         public ActionResult<string> AddProduct([FromForm] string productDetails, [FromForm] IFormFile file)
         {
+            if(file == null)
+            {
+                return BadRequest("Please Choose Product Image");
+            }
+
             int i;
             if (string.Equals(User.GetUserRole(), "Supplier") || string.Equals(User.GetUserRole(), "GoldSupplier"))
             {
