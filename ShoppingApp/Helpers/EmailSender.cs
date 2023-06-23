@@ -59,7 +59,7 @@ namespace ShoppingApp.Helpers
 
             emailMessage.Body = new TextPart(MimeKit.Text.TextFormat.Html)
             {
-                Text = string.Format("<h3 style='color:green'>{0} </h3>" +
+                Text = string.Format("<h3 style='color:blue'>{0} </h3>" +
                                   "<h4 style='color:black'>Hi {1}, " +
                                   "<p style='color:black'> Welcome To India's Largest Online Shopping Portal</p>" +
                                   "</h4><br>" + "contact <strong>shopmeportal@gmail.com</strong> for your queries related to ShopMe",

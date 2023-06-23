@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "/743KLWZ5nSI4H8eSqJLdmzB0qi0lnofdROrABXp9dhREY0hgYc/gZjKnvAolhhQ6rqArt26uLy47BU0RugL6w==",
+  "dgSpecHash": "wIPlaR3W2tY9O/Dv5JvFIuYZPIPPOpZPznn2JD2xuYnglWEfrk+yGueh+XP/UzbTkafTsJosPY5kePyrFanQuw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\RB00271\\source\\repos\\ShoppingApp\\ShoppingApp\\ShoppingApp.csproj",
+  "projectFilePath": "F:\\Cuser Bkup\\source\\repos\\ShoppingApp\\ShoppingApp\\ShoppingApp.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\RB00271\\.nuget\\packages\\automapper\\10.1.1\\automapper.10.1.1.nupkg.sha512",
     "C:\\Users\\RB00271\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\8.1.1\\automapper.extensions.microsoft.dependencyinjection.8.1.1.nupkg.sha512",
@@ -145,8 +145,7 @@
     "C:\\Users\\RB00271\\.nuget\\packages\\system.xml.readerwriter\\4.3.0\\system.xml.readerwriter.4.3.0.nupkg.sha512",
     "C:\\Users\\RB00271\\.nuget\\packages\\system.xml.xdocument\\4.3.0\\system.xml.xdocument.4.3.0.nupkg.sha512",
     "C:\\Users\\RB00271\\.nuget\\packages\\system.xml.xmldocument\\4.3.0\\system.xml.xmldocument.4.3.0.nupkg.sha512",
-    "C:\\Users\\RB00271\\.nuget\\packages\\system.xml.xmlserializer\\4.3.0\\system.xml.xmlserializer.4.3.0.nupkg.sha512",
-    "C:\\Users\\RB00271\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\3.1.18\\microsoft.netcore.app.host.win-x64.3.1.18.nupkg.sha512"
+    "C:\\Users\\RB00271\\.nuget\\packages\\system.xml.xmlserializer\\4.3.0\\system.xml.xmlserializer.4.3.0.nupkg.sha512"
   ],
   "logs": []
 }
